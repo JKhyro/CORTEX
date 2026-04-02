@@ -1,6 +1,6 @@
 # CORTEX
 
-CORTEX is the canonical management surface for agents, subagents, arrays, roles, lifecycle actions, and personality-aware control inside SYMBIOSIS and SYNAPSIS.
+CORTEX is the canonical management surface for agents, subagents, arrays, roles, lifecycle actions, and personality-aware control inside SYMBIOSIS and SYNAPSE.
 
 ## Direction
 
