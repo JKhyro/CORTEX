@@ -77,6 +77,7 @@ The UI should also help an operator visually interpret CORTEX progress in the cu
 - map each lane to the surface it affects, such as entity model, lifecycle, integration, UI, or packaging
 - show lane state as `done`, `active`, or `queued` so merged work is visually distinct from the current drafting lane
 - show aggregate execution progress such as merged-lane counts or percentages derived from repo truth
+- show first-wave planning progress separately from overall product-readiness progress so specification completion is not mistaken for a functional product
 - keep this panel read-only so project visibility does not become a second planning authority
 
 ## Lifecycle console behavior
@@ -119,5 +120,5 @@ Each error should show:
 3. The operator attaches a PRISM stylization input and an ASCENT progression input.
 4. The Component Inspector shows current owner, provenance aliases, and 3/12 subagent capacity on the active slot.
 5. The Lifecycle Console exposes validate and mark_ready because those are the only native-legal actions.
-6. The Execution Wave Rail shows #6, #5, #10, #4, and #11 complete, #7 active, and #8 queued as the next follow-on lane.
+6. The Execution Wave Rail shows #6, #5, #10, #4, #11, and #7 complete, #8 active, and #3 queued as the next follow-on lane.
 ```
