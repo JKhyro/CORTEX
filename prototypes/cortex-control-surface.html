@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CORTEX Control Surface Prototype</title>
+  <style>
+    :root {
+      --ink: #f7f3ea;
+      --muted: #d1c8bb;
+      --panel: rgba(26, 28, 33, 0.82);
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #ff8a3d;
+      --accent-soft: rgba(255, 138, 61, 0.18);
+      --glow: #46d2ba;
+      --warning: #ffc857;
+      --bg-top: #31160f;
+      --bg-mid: #10262a;
+      --bg-bottom: #090c11;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Sitka Text", Georgia, serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 138, 61, 0.24), transparent 28rem),
+        radial-gradient(circle at top right, rgba(70, 210, 186, 0.18), transparent 24rem),
+        linear-gradient(160deg, var(--bg-top), var(--bg-mid) 48%, var(--bg-bottom));
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 2.75rem 2.75rem;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
+    }
+
+    .page {
+      width: min(1220px, calc(100vw - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+
+    .hero,
+    .panel,
+    .wave-card,
+    .slot,
+    .rail-step {
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      animation: rise 0.6s ease both;
+    }
+
+    .hero {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: 1.6fr 1fr;
+      padding: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 1.5rem;
+      background: linear-gradient(145deg, rgba(25, 27, 32, 0.84), rgba(13, 15, 19, 0.92));
+    }
+
+    .kicker,
+    .panel h2,
+    .wave-card .issue,
+    .legend span {
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .kicker {
+      color: var(--warning);
+      font-size: 0.78rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      line-height: 0.95;
+    }
+
+    .hero p {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 44rem;
+    }
+
+    .hero-metrics {
+      display: grid;
+      gap: 0.85rem;
+      align-content: start;
+    }
+
+    .metric {
+      padding: 0.95rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .metric strong {
+      display: block;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-size: 1.35rem;
+      color: var(--accent);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .main-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+      grid-template-columns: 1.1fr 1.25fr 0.95fr;
+    }
+
+    .panel {
+      padding: 1.15rem;
+      border-radius: 1.25rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .panel h2 {
+      margin: 0 0 0.9rem;
+      font-size: 0.88rem;
+      color: var(--warning);
+    }
+
+    .wave {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .wave-card {
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .wave-card.current {
+      border-color: rgba(255, 138, 61, 0.6);
+      background: linear-gradient(145deg, rgba(255, 138, 61, 0.12), rgba(255, 255, 255, 0.03));
+    }
+
+    .wave-card.next {
+      border-color: rgba(70, 210, 186, 0.4);
+    }
+
+    .wave-card .issue {
+      font-size: 0.74rem;
+      color: var(--warning);
+    }
+
+    .wave-card strong {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 1rem;
+    }
+
+    .wave-card p {
+      margin: 0.45rem 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .composer-toggle {
+      display: inline-flex;
+      gap: 0.45rem;
+      padding: 0.3rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+    }
+
+    .composer-toggle button {
+      border: 0;
+      border-radius: 999px;
+      padding: 0.55rem 0.95rem;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+    }
+
+    .composer-toggle button.active {
+      background: linear-gradient(135deg, rgba(255, 138, 61, 0.95), rgba(255, 200, 87, 0.78));
+      color: #23150d;
+    }
+
+    .slots {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .slot {
+      display: grid;
+      gap: 0.55rem;
+      padding: 0.95rem;
+      border-radius: 1rem;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+    }
+
+    .slot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-size: 0.72rem;
+    }
+
+    .subagent-bar {
+      position: relative;
+      height: 0.65rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .subagent-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: var(--fill, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--glow), #72f2ba);
+    }
+
+    .lifecycle-rail {
+      display: grid;
+      gap: 0.65rem;
+      margin-top: 0.5rem;
+    }
+
+    .rail-step {
+      padding: 0.75rem 0.9rem;
+      border-radius: 0.95rem;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .rail-step.active {
+      border-color: rgba(70, 210, 186, 0.5);
+      background: rgba(70, 210, 186, 0.1);
+    }
+
+    .rail-step strong {
+      display: block;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      margin-bottom: 0.2rem;
+    }
+
+    .io-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .io-card {
+      padding: 0.9rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot.glow { background: var(--glow); }
+    .dot.warn { background: var(--warning); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .hero, .main-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div>
+        <div class="kicker">CORTEX native-first control surface</div>
+        <h1>Character governance, project visibility, and ARA composition in one operator view.</h1>
+        <p>
+          This prototype visualizes the current CORTEX execution wave while also sketching the thin-host
+          creation and management surface. The shell presents state, composition, and progress. The native
+          core remains authoritative for entity rules, lifecycle, and subagent governance.
+        </p>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric">
+          <strong>#6 Active</strong>
+          <span>Canonical entity model is the current execute-now lane.</span>
+        </div>
+        <div class="metric">
+          <strong>#5 Next</strong>
+          <span>Lifecycle state machine becomes the immediate follow-on once entity classes are locked.</span>
+        </div>
+        <div class="metric">
+          <strong>2 / 3 Component</strong>
+          <span>First-class creation flows stay visible without losing room for larger arrays later.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <article class="panel">
+        <h2>Execution Wave Rail</h2>
+        <div class="wave">
+          <div class="wave-card current">
+            <div class="issue">Issue #6</div>
+            <strong>Canonical entity model</strong>
+            <p>Identity classes, imported definitions, overlays, exports, and ownership rules.</p>
+          </div>
+          <div class="wave-card next">
+            <div class="issue">Issue #5</div>
+            <strong>Lifecycle state machine</strong>
+            <p>Character, component, and subagent transitions with explicit operator verbs.</p>
+          </div>
+          <div class="wave-card">
+            <div class="issue">Issue #4</div>
+            <strong>PRISM contract</strong>
+            <p>Personality controls stay bounded and never replace lifecycle authority.</p>
+          </div>
+          <div class="wave-card">
+            <div class="issue">Issue #11</div>
+            <strong>ASCENT contract</strong>
+            <p>Progression enters as governed input, not character-construction authority.</p>
+          </div>
+          <div class="wave-card">
+            <div class="issue">Issue #10</div>
+            <strong>UI contract</strong>
+            <p>Creation and management surface after entity and lifecycle rules are explicit.</p>
+          </div>
+          <div class="wave-card">
+            <div class="issue">Issues #7 and #8</div>
+            <strong>Runtime and packaging</strong>
+            <p>Topology and distribution finalize after domain boundaries are locked.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Character Composer</h2>
+        <div class="composer-toggle" aria-label="Character flow selector">
+          <button type="button" class="active" data-flow="two">Two-component ARA</button>
+          <button type="button" data-flow="three">Three-component ARA</button>
+        </div>
+        <div class="slots" id="slots"></div>
+        <div class="legend">
+          <span><i class="dot"></i> Current lane</span>
+          <span><i class="dot glow"></i> Native-legal action</span>
+          <span><i class="dot warn"></i> Capacity or governance warning</span>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Lifecycle Console</h2>
+        <div class="lifecycle-rail">
+          <div class="rail-step"><strong>Draft</strong>Owner selected, array not fully bound.</div>
+          <div class="rail-step"><strong>Validated</strong>Entity model passes ownership and import checks.</div>
+          <div class="rail-step active"><strong>Ready</strong>Native core exposes `activate_character` as a legal next action.</div>
+          <div class="rail-step"><strong>Active</strong>Character and components are live.</div>
+          <div class="rail-step"><strong>Degraded</strong>A required component is impaired; recovery path is shown.</div>
+        </div>
+
+        <div class="io-grid">
+          <div class="io-card">
+            <strong>PRISM input</strong>
+            <p>Overlay palette and stylization rules are attached as bounded inputs, not lifecycle overrides.</p>
+          </div>
+          <div class="io-card">
+            <strong>ASCENT input</strong>
+            <p>Progression and reward state attach to the character as governed context for future actions.</p>
+          </div>
+          <div class="io-card">
+            <strong>Project visibility</strong>
+            <p>The execution wave stays read-only so this view informs the operator without becoming a second planning authority.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    const slotSets = {
+      two: [
+        {
+          role: "Active",
+          owner: "Primary Symbiote",
+          provenance: "Canonical label default, 2 provenance aliases attached",
+          subagents: "4 / 12 subagents governed",
+          fill: "33%"
+        },
+        {
+          role: "Memory",
+          owner: "Curator-supervised",
+          provenance: "Imported overlay staged, no promotion",
+          subagents: "2 / 12 subagents governed",
+          fill: "16%"
+        }
+      ],
+      three: [
+        {
+          role: "Active",
+          owner: "Primary Symbiote",
+          provenance: "Built-in helper template bound",
+          subagents: "4 / 12 subagents governed",
+          fill: "33%"
+        },
+        {
+          role: "Memory",
+          owner: "Curator-supervised",
+          provenance: "Imported overlay staged, no promotion",
+          subagents: "2 / 12 subagents governed",
+          fill: "16%"
+        },
+        {
+          role: "Reasoning",
+          owner: "Primary Symbiote",
+          provenance: "Imported helper definitions queued",
+          subagents: "3 / 12 subagents governed",
+          fill: "25%"
+        }
+      ]
+    };
+
+    const slots = document.getElementById("slots");
+    const buttons = Array.from(document.querySelectorAll("[data-flow]"));
+
+    function render(flow) {
+      slots.innerHTML = "";
+      slotSets[flow].forEach((slot, index) => {
+        const article = document.createElement("article");
+        article.className = "slot";
+        article.innerHTML = `
+          <div class="slot-header">
+            <strong>${index + 1}. ${slot.role} Component</strong>
+            <span class="badge">${slot.owner}</span>
+          </div>
+          <div>${slot.provenance}</div>
+          <div>${slot.subagents}</div>
+          <div class="subagent-bar" style="--fill:${slot.fill}"></div>
+        `;
+        slots.appendChild(article);
+      });
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((candidate) => candidate.classList.toggle("active", candidate === button));
+        render(button.dataset.flow);
+      });
+    });
+
+    render("two");
+  </script>
+</body>
+</html>
