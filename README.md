@@ -37,5 +37,6 @@ See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the cha
 
 - [docs/canonical-entity-model.md](docs/canonical-entity-model.md): canonical classes, ownership rules, import boundaries, exports, and provenance handling for `CORTEX #6`
 - [docs/lifecycle-state-machine.md](docs/lifecycle-state-machine.md): character, component, and subagent lifecycle states and control verbs for `CORTEX #5`
+- [docs/prism-integration-contract.md](docs/prism-integration-contract.md): bounded `PRISM -> CORTEX` contract for personality matrices, overlays, stylization, and governance envelopes for `CORTEX #4`
 - [docs/character-management-ui-contract.md](docs/character-management-ui-contract.md): thin-host creation and management surface contract for `CORTEX #10`
-- [prototypes/cortex-control-surface.html](prototypes/cortex-control-surface.html): visual prototype for the control surface and current execution wave
+- [prototypes/cortex-control-surface.html](prototypes/cortex-control-surface.html): visual prototype for the control surface, current execution wave, and progress visibility surface
