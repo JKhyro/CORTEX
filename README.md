@@ -32,3 +32,10 @@ A CORTEX character is a singular operational entity formed from an Adaptive Resp
 The native core owns character modeling, ARA behavior, lifecycle control, subagent governance, and creation-management logic. Avalonia and C# remain thin host layers rather than a second runtime authority.
 
 See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the character model and [docs/native-c-avalonia-direction.md](docs/native-c-avalonia-direction.md) for the stack rule and packaging implications.
+
+## Current specification set
+
+- [docs/canonical-entity-model.md](docs/canonical-entity-model.md): canonical classes, ownership rules, import boundaries, exports, and provenance handling for `CORTEX #6`
+- [docs/lifecycle-state-machine.md](docs/lifecycle-state-machine.md): character, component, and subagent lifecycle states and control verbs for `CORTEX #5`
+- [docs/character-management-ui-contract.md](docs/character-management-ui-contract.md): thin-host creation and management surface contract for `CORTEX #10`
+- [prototypes/cortex-control-surface.html](prototypes/cortex-control-surface.html): visual prototype for the control surface and current execution wave
