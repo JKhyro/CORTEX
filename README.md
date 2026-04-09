@@ -41,5 +41,6 @@ See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the cha
 - [docs/ascent-integration-contract.md](docs/ascent-integration-contract.md): bounded `ASCENT -> CORTEX` contract for progression state, rewards, penalties, and achievement inputs for `CORTEX #11`
 - [docs/runtime-topology.md](docs/runtime-topology.md): native-first runtime topology for child programs, host roles, and explicit bridge boundaries for `CORTEX #7`
 - [docs/packaging-distribution-model.md](docs/packaging-distribution-model.md): native-first packaging, distribution, and artifact compatibility model for `CORTEX #8`
+- [docs/external-integration-contract.md](docs/external-integration-contract.md): governed export and registration contract for `VECTOR`, `NEXUS`, and external execution targets for `CORTEX #3`
 - [docs/character-management-ui-contract.md](docs/character-management-ui-contract.md): thin-host creation and management surface contract for `CORTEX #10`
 - [prototypes/cortex-control-surface.html](prototypes/cortex-control-surface.html): visual prototype for the control surface, current execution wave, and progress visibility surface
