@@ -6,7 +6,7 @@ Issue alignment: `CORTEX #10`
 
 Define the thin-host UI contract for character creation, management, and project-progress visibility without moving CORTEX authority into the shell.
 
-This contract assumes the entity model in [`canonical-entity-model.md`](./canonical-entity-model.md) and the lifecycle rules in [`lifecycle-state-machine.md`](./lifecycle-state-machine.md).
+This contract assumes the entity model in [`canonical-entity-model.md`](./canonical-entity-model.md), the lifecycle rules in [`lifecycle-state-machine.md`](./lifecycle-state-machine.md), and the PRISM boundary in [`prism-integration-contract.md`](./prism-integration-contract.md).
 
 ## Interface contract
 
@@ -64,6 +64,7 @@ Outputs:
 - The per-component subagent ceiling must be rendered as a governed limit, not as a casual suggestion.
 - Imported provenance aliases may be shown in secondary text, but CORTEX canonical labels must remain the default display label.
 - `PRISM` inputs should appear as stylization and governance attachments, never as lifecycle or ownership overrides.
+- `PRISM` attachments should be separated into matrix, overlay, stylization, and governance-envelope views so the operator can see which layer is active.
 - `ASCENT` inputs should appear as progression and reward-state attachments, never as construction authority.
 
 ## Project-progress visibility
@@ -73,6 +74,7 @@ The UI should also help an operator visually interpret CORTEX progress in the cu
 - show the current ordered wave as `#6 -> #5 -> #4 -> #11 -> #10 -> #7 -> #8`
 - highlight the active lane and the next unlocked lane
 - map each lane to the surface it affects, such as entity model, lifecycle, integration, UI, or packaging
+- show lane state as `done`, `active`, or `queued` so merged work is visually distinct from the current drafting lane
 - keep this panel read-only so project visibility does not become a second planning authority
 
 ## Lifecycle console behavior
@@ -115,5 +117,5 @@ Each error should show:
 3. The operator attaches a PRISM stylization input and an ASCENT progression input.
 4. The Component Inspector shows current owner, provenance aliases, and 3/12 subagent capacity on the active slot.
 5. The Lifecycle Console exposes validate and mark_ready because those are the only native-legal actions.
-6. The Execution Wave Rail shows #6 complete, #5 active, and #10 queued as the UI follow-on lane.
+6. The Execution Wave Rail shows #6 and #5 complete, #4 active, and #11 queued as the next follow-on lane.
 ```

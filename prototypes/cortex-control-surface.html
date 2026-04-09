@@ -14,6 +14,7 @@
       --accent-soft: rgba(255, 138, 61, 0.18);
       --glow: #46d2ba;
       --warning: #ffc857;
+      --done: #7de07d;
       --bg-top: #31160f;
       --bg-mid: #10262a;
       --bg-bottom: #090c11;
@@ -172,6 +173,36 @@
       color: var(--warning);
     }
 
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.45rem;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .status-tag.done {
+      color: #173016;
+      background: rgba(125, 224, 125, 0.92);
+    }
+
+    .status-tag.active {
+      color: #29180d;
+      background: rgba(255, 138, 61, 0.92);
+    }
+
+    .status-tag.queued {
+      color: #0d302c;
+      background: rgba(70, 210, 186, 0.9);
+    }
+
     .wave-card strong {
       display: block;
       margin-top: 0.35rem;
@@ -323,6 +354,7 @@
 
     .dot.glow { background: var(--glow); }
     .dot.warn { background: var(--warning); }
+    .dot.done { background: var(--done); }
 
     @keyframes rise {
       from { opacity: 0; transform: translateY(10px); }
@@ -346,54 +378,64 @@
           core remains authoritative for entity rules, lifecycle, and subagent governance.
         </p>
       </div>
-      <div class="hero-metrics">
-        <div class="metric">
-          <strong>#6 Active</strong>
-          <span>Canonical entity model is the current execute-now lane.</span>
+        <div class="hero-metrics">
+          <div class="metric">
+            <strong>#4 Active</strong>
+            <span>PRISM personality controls are the current execution head after the merged doctrine pass.</span>
+          </div>
+          <div class="metric">
+            <strong>#11 Next</strong>
+            <span>ASCENT progression contract follows once the PRISM boundary is explicit.</span>
+          </div>
+          <div class="metric">
+            <strong>PR #12 Merged</strong>
+            <span>Entity, lifecycle, and UI specs are landed and visible in the repo surface.</span>
+          </div>
+          <div class="metric">
+            <strong>2 / 3 Component</strong>
+            <span>First-class creation flows stay visible without losing room for larger arrays later.</span>
+          </div>
         </div>
-        <div class="metric">
-          <strong>#5 Next</strong>
-          <span>Lifecycle state machine becomes the immediate follow-on once entity classes are locked.</span>
-        </div>
-        <div class="metric">
-          <strong>2 / 3 Component</strong>
-          <span>First-class creation flows stay visible without losing room for larger arrays later.</span>
-        </div>
-      </div>
     </section>
 
     <section class="main-grid">
       <article class="panel">
         <h2>Execution Wave Rail</h2>
-        <div class="wave">
-          <div class="wave-card current">
+          <div class="wave">
+          <div class="wave-card">
             <div class="issue">Issue #6</div>
             <strong>Canonical entity model</strong>
+            <div class="status-tag done">Done</div>
             <p>Identity classes, imported definitions, overlays, exports, and ownership rules.</p>
           </div>
-          <div class="wave-card next">
+          <div class="wave-card">
             <div class="issue">Issue #5</div>
             <strong>Lifecycle state machine</strong>
+            <div class="status-tag done">Done</div>
             <p>Character, component, and subagent transitions with explicit operator verbs.</p>
           </div>
-          <div class="wave-card">
+          <div class="wave-card current">
             <div class="issue">Issue #4</div>
             <strong>PRISM contract</strong>
+            <div class="status-tag active">Active</div>
             <p>Personality controls stay bounded and never replace lifecycle authority.</p>
           </div>
-          <div class="wave-card">
+          <div class="wave-card next">
             <div class="issue">Issue #11</div>
             <strong>ASCENT contract</strong>
+            <div class="status-tag queued">Queued</div>
             <p>Progression enters as governed input, not character-construction authority.</p>
           </div>
           <div class="wave-card">
             <div class="issue">Issue #10</div>
             <strong>UI contract</strong>
-            <p>Creation and management surface after entity and lifecycle rules are explicit.</p>
+            <div class="status-tag done">Done</div>
+            <p>Creation and management surface landed, now refreshed to mirror the current queue state.</p>
           </div>
           <div class="wave-card">
             <div class="issue">Issues #7 and #8</div>
             <strong>Runtime and packaging</strong>
+            <div class="status-tag queued">Queued</div>
             <p>Topology and distribution finalize after domain boundaries are locked.</p>
           </div>
         </div>
@@ -407,6 +449,7 @@
         </div>
         <div class="slots" id="slots"></div>
         <div class="legend">
+          <span><i class="dot done"></i> Completed lane</span>
           <span><i class="dot"></i> Current lane</span>
           <span><i class="dot glow"></i> Native-legal action</span>
           <span><i class="dot warn"></i> Capacity or governance warning</span>
@@ -426,7 +469,7 @@
         <div class="io-grid">
           <div class="io-card">
             <strong>PRISM input</strong>
-            <p>Overlay palette and stylization rules are attached as bounded inputs, not lifecycle overrides.</p>
+            <p>Matrix, overlay, stylization, and governance-envelope inputs are attached as bounded inputs, not lifecycle overrides.</p>
           </div>
           <div class="io-card">
             <strong>ASCENT input</strong>
@@ -435,6 +478,10 @@
           <div class="io-card">
             <strong>Project visibility</strong>
             <p>The execution wave stays read-only so this view informs the operator without becoming a second planning authority.</p>
+          </div>
+          <div class="io-card">
+            <strong>Project pulse</strong>
+            <p>PR #12 is merged, #4 is the active drafting lane, and #11 is the next unlocked follow-on contract.</p>
           </div>
         </div>
       </article>
