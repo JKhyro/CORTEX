@@ -126,6 +126,56 @@
       font-size: 0.92rem;
     }
 
+    .progress-strip {
+      margin-top: 1rem;
+      padding: 0.95rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+    }
+
+    .progress-head strong {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warning);
+    }
+
+    .progress-head span {
+      color: var(--ink);
+      font-size: 0.92rem;
+    }
+
+    .progress-track {
+      margin-top: 0.75rem;
+      height: 0.8rem;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-fill {
+      display: block;
+      height: 100%;
+      width: 57%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(125, 224, 125, 0.95), rgba(70, 210, 186, 0.95), rgba(255, 138, 61, 0.95));
+    }
+
+    .progress-strip p {
+      margin: 0.75rem 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
     .main-grid {
       display: grid;
       gap: 1rem;
@@ -380,21 +430,31 @@
       </div>
         <div class="hero-metrics">
           <div class="metric">
-            <strong>#4 Active</strong>
-            <span>PRISM personality controls are the current execution head after the merged doctrine pass.</span>
+            <strong>#11 Active</strong>
+            <span>ASCENT progression controls are the live execution head after the PRISM contract landed.</span>
           </div>
           <div class="metric">
-            <strong>#11 Next</strong>
-            <span>ASCENT progression contract follows once the PRISM boundary is explicit.</span>
+            <strong>#7 Next</strong>
+            <span>Runtime topology becomes the next queue head once the ASCENT boundary is explicit.</span>
           </div>
           <div class="metric">
-            <strong>PR #12 Merged</strong>
-            <span>Entity, lifecycle, and UI specs are landed and visible in the repo surface.</span>
+            <strong>PR #13 Merged</strong>
+            <span>PRISM contract work is now landed and visible on `main`.</span>
           </div>
           <div class="metric">
-            <strong>2 / 3 Component</strong>
-            <span>First-class creation flows stay visible without losing room for larger arrays later.</span>
+            <strong>4 / 7 Lanes Done</strong>
+            <span>The first-wave spec track is past halfway, but runtime and packaging remain open.</span>
           </div>
+        </div>
+        <div class="progress-strip">
+          <div class="progress-head">
+            <strong>Execution progress</strong>
+            <span>57% of the first-wave lane set is landed</span>
+          </div>
+          <div class="progress-track" aria-label="Execution wave progress">
+            <span class="progress-fill"></span>
+          </div>
+          <p>Done: #6, #5, #10, #4. Active: #11. Next: #7, then #8.</p>
         </div>
     </section>
 
@@ -414,29 +474,35 @@
             <div class="status-tag done">Done</div>
             <p>Character, component, and subagent transitions with explicit operator verbs.</p>
           </div>
-          <div class="wave-card current">
-            <div class="issue">Issue #4</div>
-            <strong>PRISM contract</strong>
-            <div class="status-tag active">Active</div>
-            <p>Personality controls stay bounded and never replace lifecycle authority.</p>
-          </div>
-          <div class="wave-card next">
-            <div class="issue">Issue #11</div>
-            <strong>ASCENT contract</strong>
-            <div class="status-tag queued">Queued</div>
-            <p>Progression enters as governed input, not character-construction authority.</p>
-          </div>
           <div class="wave-card">
             <div class="issue">Issue #10</div>
             <strong>UI contract</strong>
             <div class="status-tag done">Done</div>
-            <p>Creation and management surface landed, now refreshed to mirror the current queue state.</p>
+            <p>Creation and management surface landed, including project progress visibility rules.</p>
           </div>
           <div class="wave-card">
-            <div class="issue">Issues #7 and #8</div>
-            <strong>Runtime and packaging</strong>
+            <div class="issue">Issue #4</div>
+            <strong>PRISM contract</strong>
+            <div class="status-tag done">Done</div>
+            <p>Personality controls stay bounded and never replace lifecycle authority.</p>
+          </div>
+          <div class="wave-card current">
+            <div class="issue">Issue #11</div>
+            <strong>ASCENT contract</strong>
+            <div class="status-tag active">Active</div>
+            <p>Progression enters as governed input, not character-construction authority.</p>
+          </div>
+          <div class="wave-card next">
+            <div class="issue">Issue #7</div>
+            <strong>Runtime topology</strong>
             <div class="status-tag queued">Queued</div>
-            <p>Topology and distribution finalize after domain boundaries are locked.</p>
+            <p>Child-program topology follows once the ASCENT boundary is explicit.</p>
+          </div>
+          <div class="wave-card">
+            <div class="issue">Issue #8</div>
+            <strong>Packaging</strong>
+            <div class="status-tag queued">Queued</div>
+            <p>Distribution and release modeling finalize after runtime topology is locked.</p>
           </div>
         </div>
       </article>
@@ -469,19 +535,19 @@
         <div class="io-grid">
           <div class="io-card">
             <strong>PRISM input</strong>
-            <p>Matrix, overlay, stylization, and governance-envelope inputs are attached as bounded inputs, not lifecycle overrides.</p>
+            <p>Matrix, overlay, stylization, and governance-envelope inputs are resolved through the landed PRISM contract, not lifecycle overrides.</p>
           </div>
           <div class="io-card">
             <strong>ASCENT input</strong>
-            <p>Progression and reward state attach to the character as governed context for future actions.</p>
+            <p>Achievement, progression, reward, and penalty state attach as governed context while the ASCENT contract is the active drafting lane.</p>
           </div>
           <div class="io-card">
             <strong>Project visibility</strong>
-            <p>The execution wave stays read-only so this view informs the operator without becoming a second planning authority.</p>
+            <p>The execution wave stays read-only, shows done or active or queued state, and exposes aggregate completion without becoming a second planning authority.</p>
           </div>
           <div class="io-card">
             <strong>Project pulse</strong>
-            <p>PR #12 is merged, #4 is the active drafting lane, and #11 is the next unlocked follow-on contract.</p>
+            <p>PR #13 is merged, #11 is the active drafting lane, and #7 is the next unlocked follow-on contract.</p>
           </div>
         </div>
       </article>
