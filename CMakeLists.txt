@@ -18,6 +18,9 @@ add_library(cortex_character_runtime STATIC
 add_library(cortex_runtime_persistence STATIC
   src/runtime_persistence.c)
 
+add_executable(cortex_host
+  tools/cortex_host.c)
+
 target_include_directories(cortex_imported_catalog_mapper
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -36,14 +39,19 @@ target_link_libraries(cortex_character_runtime
 target_link_libraries(cortex_runtime_persistence
   PUBLIC cortex_character_runtime)
 
+target_link_libraries(cortex_host
+  PRIVATE cortex_runtime_persistence)
+
 if(MSVC)
   target_compile_options(cortex_imported_catalog_mapper PRIVATE /W4 /permissive-)
   target_compile_options(cortex_character_runtime PRIVATE /W4 /permissive-)
   target_compile_options(cortex_runtime_persistence PRIVATE /W4 /permissive-)
+  target_compile_options(cortex_host PRIVATE /W4 /permissive-)
 else()
   target_compile_options(cortex_imported_catalog_mapper PRIVATE -Wall -Wextra -Wpedantic)
   target_compile_options(cortex_character_runtime PRIVATE -Wall -Wextra -Wpedantic)
   target_compile_options(cortex_runtime_persistence PRIVATE -Wall -Wextra -Wpedantic)
+  target_compile_options(cortex_host PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
 enable_testing()
@@ -84,3 +92,45 @@ add_test(NAME cortex_character_runtime_tests
 
 add_test(NAME cortex_runtime_persistence_tests
   COMMAND cortex_runtime_persistence_tests)
+
+set(CORTEX_HOST_DEMO_STATE
+  ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_demo.state)
+set(CORTEX_HOST_INGEST_STATE
+  ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_ingest.state)
+
+add_test(NAME cortex_host_demo
+  COMMAND cortex_host demo ${CORTEX_HOST_DEMO_STATE})
+
+add_test(NAME cortex_host_inspect_demo
+  COMMAND cortex_host inspect ${CORTEX_HOST_DEMO_STATE})
+set_tests_properties(cortex_host_inspect_demo
+  PROPERTIES DEPENDS cortex_host_demo)
+
+add_test(NAME cortex_host_ingest_fixture
+  COMMAND cortex_host ingest
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cortex_catalog_input.tsv
+    ${CORTEX_HOST_INGEST_STATE})
+
+add_test(NAME cortex_host_audits_fixture
+  COMMAND cortex_host audits ${CORTEX_HOST_INGEST_STATE})
+set_tests_properties(cortex_host_audits_fixture
+  PROPERTIES DEPENDS cortex_host_ingest_fixture)
+
+add_test(NAME cortex_host_missing_state_fails
+  COMMAND cortex_host inspect
+    ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_missing.state)
+set_tests_properties(cortex_host_missing_state_fails
+  PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME cortex_host_bad_schema_fails
+  COMMAND cortex_host inspect
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cortex_bad_schema.state)
+set_tests_properties(cortex_host_bad_schema_fails
+  PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME cortex_host_invalid_catalog_fails
+  COMMAND cortex_host ingest
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cortex_invalid_catalog.tsv
+    ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_invalid.state)
+set_tests_properties(cortex_host_invalid_catalog_fails
+  PROPERTIES WILL_FAIL TRUE)

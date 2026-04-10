@@ -1,0 +1,5 @@
+# id	runtime_class	host_targets_csv	component_roles_csv	requested_persistent_class
+accepted-helper	imported-helper	codex,symbiosis-native	active	
+narrowed-helper	imported-helper	codex,root-shell	active	
+future-runtime	future-runtime-class	codex		
+promoted-helper	imported-helper	codex	active	Symbiote
