@@ -33,17 +33,17 @@ The native core owns character modeling, ARA behavior, lifecycle control, subage
 
 See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the character model and [docs/native-c-avalonia-direction.md](docs/native-c-avalonia-direction.md) for the stack rule and packaging implications.
 
-## Native runtime slice
+## Native runtime slices
 
-The first native C runtime slice is the imported catalog mapper for `CORTEX #19`.
+The first native C runtime slices are the imported catalog mapper for `CORTEX #19` and the character/ARA lifecycle core for `CORTEX #21`.
 
 ```powershell
-cmake -S . -B "$env:LOCALAPPDATA\CORTEX\imported-catalog-build"
-cmake --build "$env:LOCALAPPDATA\CORTEX\imported-catalog-build" --config Debug
-ctest --test-dir "$env:LOCALAPPDATA\CORTEX\imported-catalog-build" -C Debug --output-on-failure
+cmake -S . -B "$env:LOCALAPPDATA\CORTEX\runtime-build"
+cmake --build "$env:LOCALAPPDATA\CORTEX\runtime-build" --config Debug
+ctest --test-dir "$env:LOCALAPPDATA\CORTEX\runtime-build" -C Debug --output-on-failure
 ```
 
-The current native entry point is [include/cortex/imported_catalog_mapper.h](include/cortex/imported_catalog_mapper.h). It exposes the mapper ABI version, descriptor version, imported catalog registration input, mapping result output, stable outcome/error enums, and the subagent bind capacity guard.
+The current native entry points are [include/cortex/imported_catalog_mapper.h](include/cortex/imported_catalog_mapper.h) and [include/cortex/character_runtime.h](include/cortex/character_runtime.h). They expose the mapper ABI, character/runtime ABI, lifecycle state/actions, stable outcome/error enums, governed imported-helper binding, and subagent capacity guards.
 
 ## Current specification set
 
@@ -63,9 +63,10 @@ The current native entry point is [include/cortex/imported_catalog_mapper.h](inc
 - `CORTEX #3`: Done
 - `CORTEX #9`: Done
 - `CORTEX #19`: Done
-- `CORTEX #21`: Next (native character and ARA lifecycle core)
-- `CORTEX #2`: In Progress (execution sequencing and PRISM wave entry)
+- `CORTEX #21`: Done
+- `CORTEX #24`: Next (live catalog ingestion and runtime persistence)
+- `CORTEX #2`: Done
 
 ## Functional readiness
 
-CORTEX is roughly 22% complete toward a usable runnable product. The contract set, static progress prototype, and first native C mapper/test slice are in place, but broader character runtime, persistence, live catalog ingestion, complete lifecycle execution, and shell integration are still under implementation.
+CORTEX is roughly 30% complete toward a usable runnable product. The contract set, static progress prototype, native imported catalog mapper, and native character/ARA lifecycle core are in place with executable tests, but durable persistence, live catalog ingestion, shell integration, and installable packaging are still open.
