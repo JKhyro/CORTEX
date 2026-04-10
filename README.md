@@ -33,6 +33,18 @@ The native core owns character modeling, ARA behavior, lifecycle control, subage
 
 See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the character model and [docs/native-c-avalonia-direction.md](docs/native-c-avalonia-direction.md) for the stack rule and packaging implications.
 
+## Native runtime slice
+
+The first native C runtime slice is the imported catalog mapper for `CORTEX #19`.
+
+```powershell
+cmake -S . -B "$env:LOCALAPPDATA\CORTEX\imported-catalog-build"
+cmake --build "$env:LOCALAPPDATA\CORTEX\imported-catalog-build" --config Debug
+ctest --test-dir "$env:LOCALAPPDATA\CORTEX\imported-catalog-build" -C Debug --output-on-failure
+```
+
+The current native entry point is [include/cortex/imported_catalog_mapper.h](include/cortex/imported_catalog_mapper.h). It exposes the mapper ABI version, descriptor version, imported catalog registration input, mapping result output, stable outcome/error enums, and the subagent bind capacity guard.
+
 ## Current specification set
 
 - [docs/canonical-entity-model.md](docs/canonical-entity-model.md): canonical classes, ownership rules, import boundaries, exports, and provenance handling for `CORTEX #6`
@@ -49,5 +61,10 @@ See [docs/character-ara-doctrine.md](docs/character-ara-doctrine.md) for the cha
 ## Current execution status
 
 - `CORTEX #3`: Done
-- `CORTEX #9`: Active (imported helper/subagent mapping contract)
+- `CORTEX #9`: Done
+- `CORTEX #19`: Active (native imported catalog mapper/runtime enforcement)
 - `CORTEX #2`: In Progress (execution sequencing and PRISM wave entry)
+
+## Functional readiness
+
+CORTEX is roughly 20% complete toward a usable runnable product. The contract set, static progress prototype, and first native C mapper/test slice are in place, but broader character runtime, persistence, live catalog ingestion, complete lifecycle execution, and shell integration are still under implementation.
