@@ -62,9 +62,10 @@ The current native entry point is [include/cortex/imported_catalog_mapper.h](inc
 
 - `CORTEX #3`: Done
 - `CORTEX #9`: Done
-- `CORTEX #19`: Active (native imported catalog mapper/runtime enforcement)
+- `CORTEX #19`: Done
+- `CORTEX #21`: Next (native character and ARA lifecycle core)
 - `CORTEX #2`: In Progress (execution sequencing and PRISM wave entry)
 
 ## Functional readiness
 
-CORTEX is roughly 20% complete toward a usable runnable product. The contract set, static progress prototype, and first native C mapper/test slice are in place, but broader character runtime, persistence, live catalog ingestion, complete lifecycle execution, and shell integration are still under implementation.
+CORTEX is roughly 22% complete toward a usable runnable product. The contract set, static progress prototype, and first native C mapper/test slice are in place, but broader character runtime, persistence, live catalog ingestion, complete lifecycle execution, and shell integration are still under implementation.
