@@ -64,9 +64,9 @@ The current native entry points are [include/cortex/imported_catalog_mapper.h](i
 - `CORTEX #9`: Done
 - `CORTEX #19`: Done
 - `CORTEX #21`: Done
-- `CORTEX #24`: Next (live catalog ingestion and runtime persistence)
+- `CORTEX #24`: Done
 - `CORTEX #2`: Done
 
 ## Functional readiness
 
-CORTEX is roughly 30% complete toward a usable runnable product. The contract set, static progress prototype, native imported catalog mapper, and native character/ARA lifecycle core are in place with executable tests, but durable persistence, live catalog ingestion, shell integration, and installable packaging are still open.
+CORTEX is roughly 38% complete toward a usable runnable product. The contract set, static progress prototype, native imported catalog mapper, native character/ARA lifecycle core, and first durable runtime persistence slice are in place with executable tests. Shell integration, real external catalog feed wiring, installable packaging, and an operator-ready host surface still remain.
