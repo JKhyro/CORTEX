@@ -95,6 +95,7 @@ static void narrows_mixed_host_targets(void) {
   CHECK(result.outcome == CORTEX_IMPORT_OUTCOME_NARROWED);
   CHECK(result.surface == CORTEX_IMPORT_SURFACE_HELPER_SUBAGENT_DEFINITION);
   CHECK(result.error == CORTEX_IMPORT_OK);
+  CHECK(result.can_bind_as_subagent == 1u);
   CHECK(strcmp(result.rule_id, "host_targets_narrowed") == 0);
   CHECK(strcmp(cortex_import_outcome_name(result.outcome), "narrowed") == 0);
 }
