@@ -30,6 +30,7 @@ typedef struct cortex_host_catalog_row {
   char host_list[CORTEX_HOST_LIST_CAPACITY];
   char role_list[CORTEX_HOST_LIST_CAPACITY];
   char requested_persistent_class[CORTEX_HOST_TEXT_CAPACITY];
+  char source_path[CORTEX_PERSISTED_PATH_CAPACITY];
   char host_values[CORTEX_HOST_MAX_HOSTS][CORTEX_HOST_TEXT_CAPACITY];
   const char *host_targets[CORTEX_HOST_MAX_HOSTS];
   char role_values[CORTEX_HOST_MAX_ROLES][CORTEX_HOST_TEXT_CAPACITY];
@@ -95,6 +96,21 @@ static int copy_text(char *target, size_t capacity, const char *source) {
     memcpy(target, source, length + 1u);
   }
 
+  return 1;
+}
+
+static int copy_portable_path(char *target, size_t capacity, const char *source) {
+  size_t index = 0u;
+  size_t length = source == 0 ? 0u : strlen(source);
+
+  if (target == 0 || capacity == 0u || length >= capacity) {
+    return 0;
+  }
+
+  for (index = 0u; index < length; ++index) {
+    target[index] = source[index] == '\\' ? '/' : source[index];
+  }
+  target[length] = '\0';
   return 1;
 }
 
@@ -286,6 +302,7 @@ static void print_usage(void) {
   puts("  version");
   puts("  demo <state-file>");
   puts("  ingest <catalog-tsv> <state-file>");
+  puts("  bind-catalog <catalog-tsv> <state-file>");
   puts("  inspect <state-file>");
   puts("  audits <state-file>");
   puts("");
@@ -408,7 +425,8 @@ static int parse_catalog_line(
       !copy_text(row->host_list, sizeof(row->host_list), fields[2]) ||
       !copy_text(row->role_list, sizeof(row->role_list), fields[3]) ||
       !copy_text(row->requested_persistent_class,
-                 sizeof(row->requested_persistent_class), fields[4])) {
+                 sizeof(row->requested_persistent_class), fields[4]) ||
+      !copy_portable_path(row->source_path, sizeof(row->source_path), source_path)) {
     fprintf(stderr, "invalid catalog line %zu: field exceeds host parser capacity\n", line_number);
     return 0;
   }
@@ -423,7 +441,7 @@ static int parse_catalog_line(
 
   row->registration.registration_id = row->registration_id;
   row->registration.source_repo = "local-cortex-host";
-  row->registration.source_path = source_path;
+  row->registration.source_path = row->source_path;
   row->registration.source_commit = "working-tree";
   row->registration.source_manifest_ref = "cortex-host-tsv";
   row->registration.runtime_class = row->runtime_class;
@@ -536,6 +554,108 @@ static int command_ingest(const char *catalog_path, const char *state_path) {
   return CORTEX_HOST_EXIT_OK;
 }
 
+static int command_bind_catalog(const char *catalog_path, const char *state_path) {
+  cortex_host_catalog_row rows[CORTEX_HOST_MAX_REGISTRATIONS];
+  cortex_catalog_registration registrations[CORTEX_HOST_MAX_REGISTRATIONS];
+  cortex_persisted_import_audit audits[CORTEX_HOST_MAX_REGISTRATIONS];
+  cortex_persisted_character_record characters[1];
+  cortex_persisted_component_record persisted_components[2];
+  cortex_persisted_subagent_record persisted_subagents[1];
+  cortex_import_mapping_result mapping;
+  cortex_ara_component components[2];
+  cortex_character character = make_demo_character(components);
+  cortex_subagent_instance subagent;
+  cortex_runtime_result runtime_result;
+  cortex_runtime_state_snapshot snapshot;
+  cortex_persistence_result result;
+  cortex_persistence_error error = CORTEX_PERSISTENCE_OK;
+  size_t row_count = 0u;
+  size_t audit_count = 0u;
+  size_t index = 0u;
+  size_t selected_index = (size_t)-1;
+
+  memset(rows, 0, sizeof(rows));
+  memset(registrations, 0, sizeof(registrations));
+  memset(audits, 0, sizeof(audits));
+  memset(characters, 0, sizeof(characters));
+  memset(persisted_components, 0, sizeof(persisted_components));
+  memset(persisted_subagents, 0, sizeof(persisted_subagents));
+  memset(&subagent, 0, sizeof(subagent));
+
+  if (!load_catalog_file(catalog_path, rows, CORTEX_HOST_MAX_REGISTRATIONS, &row_count)) {
+    return CORTEX_HOST_EXIT_USAGE;
+  }
+
+  for (index = 0u; index < row_count; ++index) {
+    registrations[index] = rows[index].registration;
+  }
+
+  error = cortex_catalog_ingest_batch(registrations, row_count, audits,
+                                      CORTEX_HOST_MAX_REGISTRATIONS,
+                                      &audit_count, &result);
+  if (error != CORTEX_PERSISTENCE_OK) {
+    return report_persistence_error("bind catalog ingest", error, &result);
+  }
+
+  for (index = 0u; index < row_count; ++index) {
+    if (cortex_import_map_registration(&registrations[index], &mapping) == CORTEX_IMPORT_OK &&
+        mapping.can_bind_as_subagent == 1u) {
+      selected_index = index;
+      break;
+    }
+  }
+
+  if (selected_index == (size_t)-1) {
+    fprintf(stderr, "bind-catalog failed: no bindable imported helper in %s\n", catalog_path);
+    return CORTEX_HOST_EXIT_RUNTIME;
+  }
+
+  subagent.subagent_id = registrations[selected_index].registration_id;
+  subagent.lifecycle_state = CORTEX_SUBAGENT_DEFINED;
+  if (cortex_subagent_bind_imported_helper(&character, 0u, &mapping, &subagent, &runtime_result) !=
+      CORTEX_RUNTIME_OK) {
+    fprintf(stderr, "bind catalog failed: %s rule=%s\n",
+            cortex_runtime_error_name(runtime_result.error),
+            runtime_result.rule_id);
+    return CORTEX_HOST_EXIT_RUNTIME;
+  }
+
+  if (cortex_subagent_apply_verb_for_component(&character, 0u, &subagent,
+                                               CORTEX_VERB_CONFIRM_SUBAGENT_SPAWN,
+                                               &runtime_result) != CORTEX_RUNTIME_OK) {
+    fprintf(stderr, "bind catalog spawn failed: %s rule=%s\n",
+            cortex_runtime_error_name(runtime_result.error),
+            runtime_result.rule_id);
+    return CORTEX_HOST_EXIT_RUNTIME;
+  }
+
+  snapshot = make_snapshot(audits, CORTEX_HOST_MAX_REGISTRATIONS,
+                           characters, 1u, persisted_components, 2u,
+                           persisted_subagents, 1u);
+  snapshot.audit_count = audit_count;
+
+  error = cortex_runtime_capture_character(&character, &subagent, 1u,
+                                           &snapshot, &result);
+  if (error != CORTEX_PERSISTENCE_OK) {
+    return report_persistence_error("bind catalog capture", error, &result);
+  }
+
+  error = cortex_runtime_state_save(state_path, &snapshot, &result);
+  if (error != CORTEX_PERSISTENCE_OK) {
+    return report_persistence_error("bind catalog save", error, &result);
+  }
+
+  printf("bound %s from %s to %s audits=%zu characters=%zu components=%zu subagents=%zu\n",
+         registrations[selected_index].registration_id,
+         catalog_path,
+         state_path,
+         snapshot.audit_count,
+         snapshot.character_count,
+         snapshot.component_count,
+         snapshot.subagent_count);
+  return CORTEX_HOST_EXIT_OK;
+}
+
 static int command_inspect(const char *state_path, int audits_only) {
   cortex_persisted_import_audit audits[CORTEX_HOST_SNAPSHOT_AUDITS];
   cortex_persisted_character_record characters[CORTEX_HOST_SNAPSHOT_CHARACTERS];
@@ -627,6 +747,10 @@ int main(int argc, char **argv) {
 
   if (strcmp(argv[1], "ingest") == 0 && argc == 4) {
     return command_ingest(argv[2], argv[3]);
+  }
+
+  if (strcmp(argv[1], "bind-catalog") == 0 && argc == 4) {
+    return command_bind_catalog(argv[2], argv[3]);
   }
 
   if (strcmp(argv[1], "inspect") == 0 && argc == 3) {
