@@ -112,6 +112,19 @@ add_test(NAME cortex_host_ingest_fixture
     ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cortex_catalog_input.tsv
     ${CORTEX_HOST_INGEST_STATE})
 
+set(CORTEX_HOST_BIND_CATALOG_STATE
+  ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_bind_catalog.state)
+
+add_test(NAME cortex_host_bind_catalog_fixture
+  COMMAND cortex_host bind-catalog
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/cortex_catalog_input.tsv
+    ${CORTEX_HOST_BIND_CATALOG_STATE})
+
+add_test(NAME cortex_host_inspect_bind_catalog
+  COMMAND cortex_host inspect ${CORTEX_HOST_BIND_CATALOG_STATE})
+set_tests_properties(cortex_host_inspect_bind_catalog
+  PROPERTIES DEPENDS cortex_host_bind_catalog_fixture)
+
 add_test(NAME cortex_host_audits_fixture
   COMMAND cortex_host audits ${CORTEX_HOST_INGEST_STATE})
 set_tests_properties(cortex_host_audits_fixture
