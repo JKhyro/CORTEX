@@ -121,5 +121,5 @@ Each error should show:
 3. The operator attaches a PRISM stylization input and an ASCENT progression input.
 4. The Component Inspector shows current owner, provenance aliases, and 3/12 subagent capacity on the active slot.
 5. The Lifecycle Console exposes validate and mark_ready because those are the only native-legal actions.
-6. The Execution Wave Rail shows the first-wave set complete, #3 active as the current integration lane, and #9 queued as the next follow-on mapping lane.
+6. The Execution Wave Rail shows the first-wave set complete, #3 done as the integration lane, and #9 active as the imported-catalog mapping lane.
 ```

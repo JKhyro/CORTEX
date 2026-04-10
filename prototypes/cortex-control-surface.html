@@ -13,6 +13,8 @@
       --accent: #ff8a3d;
       --accent-soft: rgba(255, 138, 61, 0.18);
       --glow: #46d2ba;
+      --template: #8db7ff;
+      --overlay: #ff77a8;
       --warning: #ffc857;
       --done: #7de07d;
       --bg-top: #31160f;
@@ -304,11 +306,27 @@
       background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
     }
 
+    .slot.import-helper {
+      border-color: rgba(70, 210, 186, 0.48);
+      background: linear-gradient(145deg, rgba(70, 210, 186, 0.11), rgba(255, 255, 255, 0.03));
+    }
+
+    .slot.import-template {
+      border-color: rgba(141, 183, 255, 0.5);
+      background: linear-gradient(145deg, rgba(141, 183, 255, 0.12), rgba(255, 255, 255, 0.03));
+    }
+
+    .slot.import-overlay {
+      border-color: rgba(255, 119, 168, 0.5);
+      background: linear-gradient(145deg, rgba(255, 119, 168, 0.12), rgba(255, 255, 255, 0.03));
+    }
+
     .slot-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
     .badge {
@@ -321,6 +339,33 @@
       color: var(--accent);
       font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
       font-size: 0.72rem;
+    }
+
+    .surface-chip {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      padding: 0.24rem 0.58rem;
+      border-radius: 999px;
+      font-family: "Bahnschrift", "Trebuchet MS", sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .surface-chip.helper {
+      color: #0b302a;
+      background: rgba(70, 210, 186, 0.92);
+    }
+
+    .surface-chip.template {
+      color: #081e44;
+      background: rgba(141, 183, 255, 0.92);
+    }
+
+    .surface-chip.overlay {
+      color: #3b1021;
+      background: rgba(255, 119, 168, 0.92);
     }
 
     .subagent-bar {
@@ -403,6 +448,8 @@
     }
 
     .dot.glow { background: var(--glow); }
+    .dot.template { background: var(--template); }
+    .dot.overlay { background: var(--overlay); }
     .dot.warn { background: var(--warning); }
     .dot.done { background: var(--done); }
 
@@ -430,16 +477,16 @@
       </div>
         <div class="hero-metrics">
           <div class="metric">
-            <strong>#3 Active</strong>
-            <span>External integration is the live execution head now that the first-wave packaging lane is complete.</span>
+            <strong>#9 Active</strong>
+            <span>Imported catalog mapping is the live execution head for governed helper, template, and overlay intake.</span>
           </div>
           <div class="metric">
-            <strong>#9 Next</strong>
-            <span>Imported catalog mapping follows once the top-level external boundary is explicit.</span>
+            <strong>#3 Done</strong>
+            <span>VECTOR, NEXUS, and external execution boundaries are landed and ready for follow-on mapping work.</span>
           </div>
           <div class="metric">
-            <strong>7 / 7 Wave Done</strong>
-            <span>The first-wave execution set is complete and the project has moved into follow-on integration work.</span>
+            <strong>8 / 8 Contracts Done</strong>
+            <span>The first-wave contract set is complete; #9 now turns those contracts into imported-catalog ownership rules.</span>
           </div>
           <div class="metric">
             <strong>30% Product Ready</strong>
@@ -454,7 +501,7 @@
           <div class="progress-track" aria-label="Execution wave progress">
             <span class="progress-fill" style="width: 100%;"></span>
           </div>
-          <p>Done: #6, #5, #10, #4, #11, #7, #8. Active: #3. Next: #9.</p>
+          <p>Done: #6, #5, #10, #4, #11, #7, #8, #3. Active: #9 imported catalog mapping.</p>
         </div>
     </section>
 
@@ -492,17 +539,17 @@
             <div class="status-tag done">Done</div>
             <p>Progression enters as governed input, not character-construction authority.</p>
           </div>
-          <div class="wave-card current">
+          <div class="wave-card">
             <div class="issue">Issue #3</div>
             <strong>External integration</strong>
-            <div class="status-tag active">Active</div>
-            <p>VECTOR, NEXUS, and external execution targets are the current lane now that packaging identity is explicit.</p>
+            <div class="status-tag done">Done</div>
+            <p>VECTOR, NEXUS, and external execution targets are bounded so imported definitions can enter governed CORTEX surfaces.</p>
           </div>
-          <div class="wave-card next">
+          <div class="wave-card current">
             <div class="issue">Issue #9</div>
             <strong>Catalog mapping</strong>
-            <div class="status-tag queued">Queued</div>
-            <p>Imported external subagent definitions map into governed helper, template, overlay, and lifecycle surfaces after the top-level contract lands.</p>
+            <div class="status-tag active">Active</div>
+            <p>Imported external subagent definitions now map into governed helper, template, overlay, and lifecycle ownership surfaces.</p>
           </div>
         </div>
       </article>
@@ -517,7 +564,9 @@
         <div class="legend">
           <span><i class="dot done"></i> Completed lane</span>
           <span><i class="dot"></i> Current lane</span>
-          <span><i class="dot glow"></i> Native-legal action</span>
+          <span><i class="dot glow"></i> Imported helper / native-legal action</span>
+          <span><i class="dot template"></i> Imported array template</span>
+          <span><i class="dot overlay"></i> Imported character overlay</span>
           <span><i class="dot warn"></i> Capacity or governance warning</span>
         </div>
       </article>
@@ -543,11 +592,11 @@
           </div>
           <div class="io-card">
             <strong>Project visibility</strong>
-            <p>The execution wave stays read-only, shows done or active or queued state, and distinguishes first-wave planning progress from overall product readiness.</p>
+            <p>The execution wave stays read-only, shows done or active state, and distinguishes first-wave planning progress from imported-catalog mapping work.</p>
           </div>
           <div class="io-card">
             <strong>Project pulse</strong>
-            <p>PR #16 is merged, the first-wave plan is complete, #3 is active, and the product is still early overall despite stronger architectural coverage.</p>
+            <p>Issue #3 is done, the first-wave contract set is complete, #9 is active, and the product is still early overall despite stronger architectural coverage.</p>
           </div>
         </div>
       </article>
@@ -560,13 +609,19 @@
         {
           role: "Active",
           owner: "Primary Symbiote",
-          provenance: "Canonical label default, 2 provenance aliases attached",
+          surface: "Imported helper",
+          surfaceClass: "import-helper",
+          surfaceKind: "helper",
+          provenance: "Imported helper definitions mapped, native promotion still gated",
           subagents: "4 / 12 subagents governed",
           fill: "33%"
         },
         {
           role: "Memory",
           owner: "Curator-supervised",
+          surface: "Character overlay",
+          surfaceClass: "import-overlay",
+          surfaceKind: "overlay",
           provenance: "Imported overlay staged, no promotion",
           subagents: "2 / 12 subagents governed",
           fill: "16%"
@@ -576,13 +631,19 @@
         {
           role: "Active",
           owner: "Primary Symbiote",
-          provenance: "Built-in helper template bound",
+          surface: "Imported helper",
+          surfaceClass: "import-helper",
+          surfaceKind: "helper",
+          provenance: "Imported helper definitions mapped, native promotion still gated",
           subagents: "4 / 12 subagents governed",
           fill: "33%"
         },
         {
           role: "Memory",
           owner: "Curator-supervised",
+          surface: "Character overlay",
+          surfaceClass: "import-overlay",
+          surfaceKind: "overlay",
           provenance: "Imported overlay staged, no promotion",
           subagents: "2 / 12 subagents governed",
           fill: "16%"
@@ -590,7 +651,10 @@
         {
           role: "Reasoning",
           owner: "Primary Symbiote",
-          provenance: "Imported helper definitions queued",
+          surface: "Array template",
+          surfaceClass: "import-template",
+          surfaceKind: "template",
+          provenance: "Imported array template bound to reasoning capacity policy",
           subagents: "3 / 12 subagents governed",
           fill: "25%"
         }
@@ -604,12 +668,13 @@
       slots.innerHTML = "";
       slotSets[flow].forEach((slot, index) => {
         const article = document.createElement("article");
-        article.className = "slot";
+        article.className = `slot ${slot.surfaceClass}`;
         article.innerHTML = `
           <div class="slot-header">
             <strong>${index + 1}. ${slot.role} Component</strong>
             <span class="badge">${slot.owner}</span>
           </div>
+          <span class="surface-chip ${slot.surfaceKind}">${slot.surface}</span>
           <div>${slot.provenance}</div>
           <div>${slot.subagents}</div>
           <div class="subagent-bar" style="--fill:${slot.fill}"></div>
