@@ -8,6 +8,7 @@ project(CORTEX
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
+include(GNUInstallDirs)
 
 add_library(cortex_imported_catalog_mapper STATIC
   src/imported_catalog_mapper.c)
@@ -134,3 +135,13 @@ add_test(NAME cortex_host_invalid_catalog_fails
     ${CMAKE_CURRENT_BINARY_DIR}/cortex_host_invalid.state)
 set_tests_properties(cortex_host_invalid_catalog_fails
   PROPERTIES WILL_FAIL TRUE)
+
+install(TARGETS cortex_imported_catalog_mapper cortex_character_runtime cortex_runtime_persistence cortex_host
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(FILES include/cortex/imported_catalog_mapper.h
+  include/cortex/character_runtime.h
+  include/cortex/runtime_persistence.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cortex)
