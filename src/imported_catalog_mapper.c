@@ -104,7 +104,9 @@ static cortex_import_error finish(
     result->definition_only = surface == CORTEX_IMPORT_SURFACE_HELPER_SUBAGENT_DEFINITION ? 1u : 0u;
     result->can_bind_as_subagent =
       surface == CORTEX_IMPORT_SURFACE_HELPER_SUBAGENT_DEFINITION &&
-      outcome == CORTEX_IMPORT_OUTCOME_ACCEPTED ? 1u : 0u;
+      error == CORTEX_IMPORT_OK &&
+      (outcome == CORTEX_IMPORT_OUTCOME_ACCEPTED ||
+       outcome == CORTEX_IMPORT_OUTCOME_NARROWED) ? 1u : 0u;
   }
 
   return error;
