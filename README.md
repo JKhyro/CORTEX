@@ -19,6 +19,13 @@ A CORTEX character is a singular operational entity formed from an Adaptive Resp
 - `CORTEX -> VECTOR`: managed characters and components exposed for workspace execution
 - `SYMBIOSIS -> CORTEX`: extracted OpenClaw, Lobster, and Hermes functionality that defines the character itself
 
+## Runtime base: Hermes-derived FURYOKU
+
+The live agent runtime that executes CORTEX-managed characters and their ARA components has moved from OpenClaw to Hermes Agent. Hermes-derived FURYOKU is the runtime spine for the 7-Symbiote swarm; OpenClaw is demoted to a feature-harvest lane — selectively mined for character-defining functionality per the `SYMBIOSIS -> CORTEX` contract above, but not promoted to host. CORTEX's ARA doctrine and subagent governance rules are unchanged by the move; only the runtime that hosts the character is different. Anchor is universalized across `JKhyro` Project #20 (FURYOKU) and Project #10 (SYMBIOSIS).
+
+- Authoritative migration plan: [`FURYOKU/docs/hermes-furyoku-migration.md`](https://github.com/JKhyro/FURYOKU/blob/main/docs/hermes-furyoku-migration.md)
+- OpenClaw carryover rules: [`FURYOKU/docs/openclaw-carryover-inventory.md`](https://github.com/JKhyro/FURYOKU/blob/main/docs/openclaw-carryover-inventory.md)
+
 ## Implementation direction
 
 - Native C is the primary implementation language for the CORTEX core.
